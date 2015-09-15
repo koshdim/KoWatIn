@@ -186,6 +186,7 @@
     <Compile Include="Composite.cs" />
     <Compile Include="Body.cs" />
     <Compile Include="Constraints\QuerySelectorConstraint.cs" />
+    <Compile Include="EmbededIE.cs" />
     <Compile Include="ListItem.cs" />
     <Compile Include="ListItemCollection.cs" />
     <Compile Include="DescriptionAttribute.cs" />
@@ -200,6 +201,8 @@
     <Compile Include="Logging\LogMessageEventArgs.cs" />
     <Compile Include="Logging\LogMessageType.cs" />
     <Compile Include="Logging\StringLogWriter.cs" />
+    <Compile Include="Native\EmbeddedInternetExplorer\EmbeddedIEBrowser.cs" />
+    <Compile Include="Native\EmbeddedInternetExplorer\EmbeddedIEHelper.cs" />
     <Compile Include="Native\InternetExplorer\AttachToIeHelper.cs" />
     <Compile Include="Chrome.cs" />
     <Compile Include="Comparers\PredicateComparer.cs" />
@@ -698,6 +701,7 @@
   <ItemGroup>
     <None Include="Resources\sizzle.js" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>
