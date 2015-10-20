@@ -6,6 +6,14 @@ namespace WatiN.Core.Native.EmbeddedInternetExplorer
     internal class EmbeddedIEBrowser : INativeBrowser
     {
         private IEDocument nativeDocument;
+        private string _applicationProcessName;
+
+        public EmbeddedIEBrowser(string applicationProcessName)
+        {
+            if (string.IsNullOrEmpty(applicationProcessName))
+                throw new ArgumentNullException("applicationProcessName");
+            this._applicationProcessName = applicationProcessName;
+        }
 
         public void NavigateTo(Uri url)
         {
@@ -35,14 +43,14 @@ namespace WatiN.Core.Native.EmbeddedInternetExplorer
 
         public IntPtr hWnd
         {
-            get { return EmbeddedIEHelper.GetHWndOutlook(); }
+            get { return EmbeddedIEHelper.GetHWnd(_applicationProcessName); }
         }
 
         public INativeDocument NativeDocument
         {
             get
             {
-                return nativeDocument ?? (nativeDocument = new IEDocument(EmbeddedIEHelper.GetIEDoc()));
+                return nativeDocument ?? (nativeDocument = new IEDocument(EmbeddedIEHelper.GetIEDoc(hWnd)));
             }
         }
     }

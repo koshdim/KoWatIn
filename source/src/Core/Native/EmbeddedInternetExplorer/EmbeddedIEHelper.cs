@@ -81,9 +81,9 @@ namespace WatiN.Core.Native.EmbeddedInternetExplorer
             return htmlDocument;
         }
 
-        public static IntPtr GetHWndOutlook()
+        public static IntPtr GetHWnd(string applicationProcessName)
         {
-            var processes = Process.GetProcessesByName("OUTLOOK");
+            var processes = Process.GetProcessesByName(applicationProcessName);
             IntPtr hWnd = processes.First().MainWindowHandle;
 
             var proc = new Win32Callback(EnumWindows);
@@ -91,10 +91,8 @@ namespace WatiN.Core.Native.EmbeddedInternetExplorer
             return hWnd;
         }
 
-        public static IHTMLDocument2 GetIEDoc()
+        public static IHTMLDocument2 GetIEDoc(IntPtr hwnd)
         {
-            var hwnd = GetHWndOutlook();
-
             return GetIEDocumentFromWindowHandle(hwnd);
         }
     }
