@@ -10,10 +10,6 @@ namespace WatiN.Core.Native.EmbeddedInternetExplorer
 {
     internal class EmbeddedIEHelper
     {
-        [DllImport("oleacc.dll", PreserveSig = false)]
-        [return: MarshalAs(UnmanagedType.Interface)]
-        static extern object ObjectFromLresult(int lResult, [MarshalAs(UnmanagedType.LPStruct)] Guid refiid, IntPtr wParam);
-        
         private static bool EnumWindows(IntPtr hwnd, IntPtr lparam)
         {
             int iRet = 1;
@@ -37,7 +33,7 @@ namespace WatiN.Core.Native.EmbeddedInternetExplorer
                 NativeMethods.SendMessageTimeout(hWnd, lMsg, 0, 0, NativeMethods.SMTO_ABORTIFHUNG, 1000, ref lResult);
                 if (lResult != 0)
                 {
-                    htmlDocument = ObjectFromLresult(lResult, typeof(IHTMLDocument).GUID, IntPtr.Zero) as IHTMLDocument2;
+                    htmlDocument = NativeMethods.ObjectFromLresult(lResult, typeof(IHTMLDocument).GUID, IntPtr.Zero) as IHTMLDocument2;
                     if (htmlDocument == null)
                     {
                         throw new COMException("Unable to cast to an object of type IHTMLDocument");

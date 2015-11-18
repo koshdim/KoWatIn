@@ -219,6 +219,10 @@ namespace WatiN.Core.Native.Windows
         [DllImport("user32.dll")]
         internal static extern void keybd_event(byte bVk, byte bScan, uint dwFlags, int dwExtraInfo);
 
+        [DllImport("oleacc.dll", PreserveSig = false)]
+        [return: MarshalAs(UnmanagedType.Interface)]
+        internal static extern object ObjectFromLresult(int lResult, [MarshalAs(UnmanagedType.LPStruct)] Guid refiid, IntPtr wParam);        
+
         /// <summary>Shows a Window</summary>
         /// <remarks>
         /// <para>To perform certain special effects when showing or hiding a 
