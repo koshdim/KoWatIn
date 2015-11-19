@@ -10,19 +10,6 @@ namespace WatiN.Core.Native.EmbeddedInternetExplorer
 {
     internal class EmbeddedIEHelper
     {
-        private static bool EnumWindows(IntPtr hwnd, IntPtr lparam)
-        {
-            int iRet = 1;
-            StringBuilder classname = new StringBuilder(128);
-            NativeMethods.GetClassName(hwnd, classname, classname.Capacity);
-            if (string.Compare(classname.ToString(), "Internet Explorer_Server") == 0)
-            {
-                lparam = hwnd;
-                iRet = 0;
-            }
-            return iRet == 0;
-        }
-
         public static IHTMLDocument2 GetIEDocumentFromWindowHandle(IntPtr hWnd)
         {
             IHTMLDocument2 htmlDocument = null;
@@ -47,9 +34,20 @@ namespace WatiN.Core.Native.EmbeddedInternetExplorer
         {
             var processes = Process.GetProcessesByName(applicationProcessName);
             IntPtr hWnd = processes.First().MainWindowHandle;
-
-            NativeMethods.EnumChildWindows(hWnd, new NativeMethods.EnumChildWindowProc(EnumWindows), hWnd);
-            return hWnd;
+            IntPtr result = IntPtr.Zero;
+            NativeMethods.EnumChildWindows(hWnd, (childHwnd, lParam) =>
+            {
+                int iRet = 1;
+                StringBuilder classname = new StringBuilder(128);
+                NativeMethods.GetClassName(childHwnd, classname, classname.Capacity);
+                if (string.Compare(classname.ToString(), "Internet Explorer_Server") == 0)
+                {
+                    result = childHwnd;
+                    iRet = 0;
+                }
+                return iRet != 0;
+            }, hWnd);
+            return result;
         }
 
         public static IHTMLDocument2 GetIEDoc(IntPtr hwnd)
